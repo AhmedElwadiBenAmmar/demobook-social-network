@@ -18,7 +18,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private long   jwtExpiration;
+    private long  jwtExpiration;
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
 
@@ -26,12 +26,15 @@ public class JwtService {
         return generateToken(new HashMap<>(),userDetails);
     }
 
-    private  String generateToken(Map<String, Object> claims , UserDetails userDetails) {
+    private  String generateToken(Map<String,Object> claims ,
+                                  UserDetails userDetails) {
 
-        return buildToken(claims , userDetails , jwtExpiration);
+        return buildToken(claims ,
+                userDetails ,
+                jwtExpiration);
     }
 
-    private String buildToken(
+    public String buildToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails,
             long jwtExpiration) {
@@ -71,17 +74,17 @@ public class JwtService {
     }
 
 
-    String extractUsername(String token) {
+    public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    public  <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
 
         return claimsResolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignInKey())
@@ -92,7 +95,7 @@ public class JwtService {
 
 
 
-    private Key getSignInKey() {
+    public Key getSignInKey() {
 
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes );

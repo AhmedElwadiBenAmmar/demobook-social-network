@@ -25,34 +25,32 @@ public class EmailService {
             String to,
             String username,
             EmailTemplateName emailTemplate,
-            String confirmationUrl,
+            String confirmationUrl,   // Doit être une URL complète, ex: https://monapp.com/activate?code=xyz
             String activationCode,
             String subject
     ) throws MessagingException {
 
-        // Préparer les propriétés
+        // Préparer les variables pour Thymeleaf
         Map<String, Object> properties = new HashMap<>();
         properties.put("username", username);
         properties.put("confirmationUrl", confirmationUrl);
         properties.put("activation_code", activationCode);
 
-        // Créer le contexte Thymeleaf
         Context context = new Context();
         context.setVariables(properties);
 
-        // Créer le message
         MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-        helper.setFrom("contact@aliboucoding.com");
+        helper.setFrom("contact@ahmedElwadi.com");
         helper.setTo(to);
         helper.setSubject(subject);
 
-        // Générer le contenu HTML
-        String template = templateEngine.process(emailTemplate.getName(), context);
-        helper.setText(template, true); // true pour HTML
+        // Générer le contenu HTML à partir du template et du contexte
+        String htmlContent = templateEngine.process(emailTemplate.getName(), context);
 
-        // Envoyer le message
+        helper.setText(htmlContent, true); // true = HTML
+
         mailSender.send(mimeMessage);
     }
 }

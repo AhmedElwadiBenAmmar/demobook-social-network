@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8088
 
 spring:
   mail:
@@ -17,10 +17,11 @@ spring:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
-
+  thymeleaf:
+    check-template-location: false
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/book_social_network
+    url: jdbc:postgresql://localhost:5432/book_social_network2
     username: wadidbuser
     password: wadi1234
 
@@ -37,7 +38,7 @@ spring:
 application:
   security:
     jwt:
-      secret-key: 535940103260210000000
+      secret-key: 98cf8a8c7c9fc9d0dc75317f30de001358772dc0a907cb6dd249ac4130c4e6874930c0e9aeddd218ca9142d4e788c3864074c48b2e0b5a901136a24e0bd44efd6ed59e450c5afd05f6c4231be441000e101066efed08aee09a13d0e673da34db3af9e11285d7d738280714b29bdd9dfa24eddc34676b0cc683ef27b080b820cdeccd6b827a48502e7cbf76373614d30f7d362396a8ee4c3b2988cce01e06a9accb02b6f96a3acc9c22eb0b991fd1c09f27acb794256a1135ac4e89ea7e3f5102d51db06ffe150bae95a12845ceaf002b30500eeb24c5ecfe78a9b0242709a6ad821fabbe8b1d6b83d91e681b97c6080160c5bf27a207e72457f72fa42d87e094
       expiration: 8640000 # milliseconds = 100 jours
 
 mailing:

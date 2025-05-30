@@ -8,8 +8,9 @@ import com.wadi.booknetwork.user.TokenRepository;
 import com.wadi.booknetwork.user.User;
 import com.wadi.booknetwork.user.UserRepository;
 import jakarta.mail.MessagingException;
-import lombok.Builder;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,11 @@ public class AuthenticationService {
     private String activationUrl;
 
     public void register(RegistrationRequest request) throws MessagingException {
+        // Vérification si l'email est déjà utilisé
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("Cet email est déjà utilisé.");
+        }
+
         var userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new IllegalStateException("ROLE USER was not initialized"));
 
@@ -49,6 +55,7 @@ public class AuthenticationService {
         userRepository.save(user);
         sendValidationEmail(user);
     }
+
 
     private void sendValidationEmail(User user) throws MessagingException {
         var newToken = generateAndSaveActivationToken(user);

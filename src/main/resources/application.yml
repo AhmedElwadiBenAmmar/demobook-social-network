@@ -5,8 +5,16 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
+  thymeleaf:
+    check-template-location: false
+
 springdoc:
   default-produces-media-type: application/json
+
 server:
   servlet:
     context-path: /api/v1/
+
+app:
+  email:
+    from: contact@ahmedElwadi.com
